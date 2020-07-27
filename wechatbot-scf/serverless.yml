@@ -1,0 +1,43 @@
+component: scf
+name: wechatbot-scf-timer
+org: Tencent
+app: wechatbot
+stage: dev
+inputs:
+  src: ./src
+  name: bananabot
+  runtime: Python3.6
+  timeout: 3
+  codeUri: ./bananabot
+  description: sends regular reminders
+  region: ${env:REGION}
+  environment:
+    variables:
+      url: ${env:WEBHOOK}
+      error_url: ${output:${stage}:${app}:getDeploymentErrorScf.triggers.apigw}
+      #error_url: https://service-ea569l60-1302554812.gz.apigw.tencentcs.com/release/error_type
+  handler: index.main_handler
+  memorySize: 64
+  tags:
+    app: bananabot
+  events:
+    - apigw:
+        name: get_error_apigw
+        parameters:
+          protocols:
+            - http
+            - https
+          serviceName: get_error
+          description: get deployment error data
+          environment: release
+          endpoints:
+            - path: /daily_errors
+              method: ANY
+              enableCORS: TRUE
+              serviceTimeout: 10
+    - timer:
+         name: get_error_timer
+         parameters:
+           cronExpression: '0 59 23 * * * *'
+           enable: true
+           argument: argument

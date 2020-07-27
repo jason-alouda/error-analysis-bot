@@ -1,0 +1,12 @@
+name: wechatbot
+author: jahchuen
+org: Tencent Cloud, Inc.
+description: Build a wechat bot to send reminders/daily info
+keywords: tencent, serverless, scf
+license: MIT
+src:
+  src: ./
+  exclude:
+    - .env
+    - serverless.yml
+    - '.git/**'

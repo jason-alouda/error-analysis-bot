@@ -1,0 +1,37 @@
+component: scf
+name: getDeploymentErrorScf
+org: Tencent
+app: wechatbot
+stage: dev
+
+inputs:
+  name: getDeploymentErrorScf
+  src: ./
+  description: Get deployment data error failure rates
+  handler: index.main_handler
+  runtime: Nodejs10.15
+  namespace: default
+  region: ${env:REGION}
+  memorySize: 128
+  timeout: 20
+  apigatewayConf:
+    enableCORS: true
+    protocols:
+      - http
+      - https
+  events:
+    - apigw:
+        name: getDeploymentErrorScf
+        parameters:
+          protocols:
+            - http
+            - https
+          serviceName: getDeploymentErrorScf
+          description: Get deployment data error failure rates
+          environment: release
+          endpoints:
+            - path: /error_type
+              method: GET
+              description: get error type failure rates
+              enableCORS: TRUE
+              serviceTimeout: 10
