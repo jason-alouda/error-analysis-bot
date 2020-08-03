@@ -1,25 +1,25 @@
 component: scf
-name: wechatbot-scf-timer
+name: slackbot-scf-timer
 org: Tencent
 app: wechatbot
 stage: dev
 inputs:
   src: ./src
-  name: bananabot
+  name: SF-bot
   runtime: Python3.6
   timeout: 30
-  codeUri: ./bananabot
+  codeUri: ./SF-bot
   description: sends regular reminders
   region: ${env:REGION}
   environment:
     variables:
-      url: ${env:WEBHOOK}
+      url: ${env:WEBHOOK2}
       error_url: ${output:${stage}:${app}:getDeploymentErrorScf.triggers.apigw.0}
       #error_url: https://service-ea569l60-1302554812.gz.apigw.tencentcs.com/release/error_type
   handler: index.main_handler
   memorySize: 64
   tags:
-    app: bananabot
+    app: SF-bot
   events:
     - apigw:
         name: get_error_apigw
